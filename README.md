@@ -46,3 +46,4 @@
 **<A href="https://github.com/daf12/Base-de-Datos-II/tree/main/HITO%202/LABORATORIO">Laboratorios de clases  ☞ laboratorio del Hito 2 [Consola, Maria DB] 💻</A>**
 </p>
 
+[![Whats-App-Image-2022-12-07-at-9-49-16-AM-3.jpg](https://i.postimg.cc/029zmNHf/Whats-App-Image-2022-12-07-at-9-49-16-AM-3.jpg)](https://postimg.cc/V5HsPzwr)
