@@ -1,0 +1,413 @@
+ENLACE CANVA https://www.canva.com/design/DAFT_tPj3v0/XzYfq8itVivcgWa02lDcXw/edit?utm_content=DAFT_tPj3v0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+CODIGO
+CREATE DATABASE DB_Biblioteca;
+USE DB_Biblioteca;
+DROP DATABASE  DB_Biblioteca;
+CREATE TABLE Estudiantes
+(
+     Id_estudiante INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+     Nombre VARCHAR(20),
+     Apellido VARCHAR(20),
+     Fecha DATE,
+     edad integer,
+     Id_prestamo INTEGER,
+     FOREIGN KEY (Id_prestamo) REFERENCES Prestamos (Id_prestamo)
+);
+
+
+CREATE TABLE Prestamos
+(
+    Id_prestamo    INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    Id_devolucion  INTEGER,
+    Id_libro       INTEGER,
+    fec_prestamo   DATE,
+    FOREIGN KEY (Id_devolucion) REFERENCES Devoluciones (Id_devolucion),
+    FOREIGN KEY (Id_libro) REFERENCES Libros (Id_libro)
+);
+
+CREATE  TABLE Devoluciones
+(
+    Id_devolucion INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    Id_prestamo INTEGER,
+    Fecha DATE
+
+
+);
+
+CREATE TABLE Libros
+(
+    Id_libro    INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    NombreLibro  VARCHAR(25),
+    Codigo_autor VARCHAR(50),
+    Codigo_editorial VARCHAR(50),
+    Fecha_lanzamiento DATE,
+    Id_autor INTEGER,
+    Id_editorial INTEGER,
+    FOREIGN KEY (Id_autor) REFERENCES Autores (Id_autor),
+    FOREIGN KEY (Id_editorial) REFERENCES Editorial (Id_editorial)
+);
+
+CREATE TABLE Autores
+(
+    Id_autor    INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    Nombre      VARCHAR(20),
+    Apellido    VARCHAR(50),
+    Nacionalidad VARCHAR(20)
+);
+
+CREATE TABLE Editorial
+(
+    Id_editorial INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    Nombre       VARCHAR(30)
+);
+CREATE TABLE Bibliotecario
+(
+    id_bibliotecario INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    ci VARCHAR(150),
+    Id_estudiante INTEGER,
+    FOREIGN KEY (Id_estudiante) REFERENCES Estudiantes (Id_estudiante)
+);
+ALTER TABLE Bibliotecario ADD COLUMN HORARIO VARCHAR(50);
+
+INSERT INTO Editorial(Id_editorial, Nombre) VALUES
+(1,'VISOR'),
+(2,'RENACIMIENTO'),
+(3,'MIRAHADAS'),
+(4,'NATURA'),
+(5,'IMPEDIMENTA');
+
+INSERT INTO Autores(Id_autor, Nombre, Apellido, Nacionalidad) VALUES
+(1,'JOSE','LUIS BORGER','ROMA'),
+(2,'MARIO','VARGAS LIOSA','INGLATERRA'),
+(3,'GABRIEL','GARZIA MENDOZA','ESPAÑA'),
+(4,'ISABEL','ILLANDEL','MEXICO'),
+(5,'ALFONSINA','STOMI','EEUU');
+
+INSERT INTO Libros(Id_libro, NombreLibro, Codigo_autor, Codigo_editorial, Fecha_lanzamiento, Id_autor, Id_editorial) VALUES
+(1,'VIAJE AL FIN DE LA NOCHE','123VFN','22233344','1932-04-11',1,1);
+INSERT INTO Libros(Id_libro, NombreLibro, Codigo_autor, Codigo_editorial, Fecha_lanzamiento, Id_autor, Id_editorial) VALUES
+(2,'Don Quijote de la Mancha','123DQM','11144455','1605-07-23',2,2),
+(3,'Los cuentos de Canterbury','123LCC','33355577','1971-10-04',3,3),
+(4,'LAS MIL Y UNA NOCHES','123LMN','12345678','1543-11-27',4,4),
+(5,'DECAMERON','123DCN','987654321','1999-11-13',5,5),
+(6,'FICCIONES','123FCC','999888777','1881-10-15',5,5),
+(7,'EL EXTRANJERO','123EXT','555666777','1761-06-06',3,3),
+(8,'GRANDES ESPERANZAS','123ESP','000111222','2000-01-21',4,4);
+
+INSERT INTO Devoluciones(Id_devolucion, Id_prestamo, Fecha) VALUES
+(1,1,'2022-12-11'),
+(2,2,'2022-12-07'),
+(3,3,'2022-12-05'),
+(4,4,'2022-11-22'),
+(5,5,'2022-11-18');
+
+INSERT INTO Prestamos(Id_prestamo, Id_devolucion, Id_libro, fec_prestamo) VALUES
+(1,1,1,'2022-09-09'),
+(2,2,5,'2022-09-07'),
+(3,3,3,'2022-09-05'),
+(4,4,6,'2022-08-20'),
+(5,5,8,'2022-08-18');
+
+INSERT INTO Estudiantes(Id_estudiante, Nombre, Apellido,edad, Fecha, Id_prestamo) VALUES
+(1,'MARCO ANTONIO','CALLE VAQUIATA',20,'2002-11-13',1),
+(2,'IRIS','MISHEL VELASCO',19,'2002-11-11',2),
+(3,'ILIA','SARZO',15,'2006-07-08',3),
+(4,'JHON','TORREZ',22,'2003-03-21',4),
+(5,'EXTERMINADOR','JUICIO FINAL',25,'1999-06-06',5);
+INSERT INTO Estudiantes(Id_estudiante, Nombre, Apellido,edad, Fecha, Id_prestamo) VALUES
+(6,'ROSARIO','KANTUTA',13,'2011-10-21',4);
+
+INSERT INTO bibliotecario(ID_BIBLIOTECARIO, NOMBRE, APELLIDO, CI,HORARIO, ID_ESTUDIANTE)VALUES
+(1,'JHON','TRAVOLTA','123456LP','8AM-14PM',1),
+(2,'JIMENA','LAURA','654321CBB','14PM-8PM',2);
+INSERT INTO bibliotecario(ID_BIBLIOTECARIO, NOMBRE, APELLIDO, CI,HORARIO, ID_ESTUDIANTE)VALUES
+(4,'ROCKY','SILVESTRE','12326CBB','8AM-14PM',6);
+
+use db_biblioteca
+#1. Consultas SQL que maneja JOINS = 5 Consultas
+
+#mostraremos los nombres y apellidos de los estudiantes que se prestaron hasta la fecha de hoy
+
+select Nombre,Apellido,edad, fec_prestamo
+from prestamos
+inner join estudiantes e on prestamos.Id_prestamo = e.Id_prestamo
+where fec_prestamo<'2022-12-07';
+
+#mostraremos todos los datos de los libros que tienen el editorial='NATURA'
+
+select*
+from editorial
+inner join libros l on editorial.Id_editorial = l.Id_editorial
+where Nombre='NATURA';
+
+#Mostraremos los nombres de los autores mas la fecha de prestamo que hicieron los estudiantes mayores a 20 años
+
+select (autores.Nombre)as AUTORES,NombreLibro,fec_prestamo,e2.Nombre,e2.Apellido,e2.edad
+from autores
+inner join libros l on autores.Id_autor = l.Id_autor
+inner join editorial e on l.Id_editorial = e.Id_editorial
+inner join prestamos p on l.Id_libro = p.Id_libro
+inner join devoluciones d on p.Id_devolucion = d.Id_devolucion
+inner join estudiantes e2 on p.Id_prestamo = e2.Id_prestamo
+where edad >20;
+
+#Mostrame todos los datos del bibliotecario que presto a estudiantes menores a 15 años
+#adicionalmente mostrame a que estudiantes presto(solo nombres y edad)
+
+select b.nombre,b.apellido,b.ci,b.HORARIO,estudiantes.Nombre,edad
+from estudiantes
+inner join bibliotecario b on estudiantes.Id_estudiante = b.Id_estudiante
+where edad <15;
+
+#mostrame los nombres de los estudiantes y que libro mas la fecha en que se les presto y en la que devolvieron
+
+select e.Nombre,NombreLibro,fec_prestamo,devoluciones.Fecha
+from devoluciones
+inner join prestamos p on devoluciones.Id_devolucion = p.Id_devolucion
+inner join estudiantes e on p.Id_prestamo = e.Id_prestamo
+inner join libros l on p.Id_libro = l.Id_libro
+
+USE db_biblioteca;
+
+#Crearemos una funcion donde devulva todos los datos del estudiante de mayor edad
+
+
+create or replace function edad_mayor()
+returns integer
+begin
+    return(
+    select max(edad)
+    from estudiantes
+        );
+end;
+
+select*
+from estudiantes
+where edad=edad_mayor();
+
+#Crearemos una funcion donde devulva todos los datos del estudiante de menor  edad
+
+create or replace function edad_menor()
+returns integer
+begin
+    return(
+    select min(edad)
+    from estudiantes
+        );
+end;
+
+select*
+from estudiantes
+where edad=edad_menor();
+
+#Crearemos un funcion que devuelva todos lo datos del estudiante segun su nombre y fecha de nacimiento
+#la funcion debe de recibir dos parametros
+
+create or replace function buscar_estu(nombres varchar(20),fecha date)
+returns text
+begin
+    return (
+        select Id_estudiante
+        from estudiantes e
+        where e.Nombre=nombres and e.Fecha=fecha
+        );
+end;
+
+select id_estudiante, nombre, apellido, fecha, id_prestamo,edad
+from estudiantes
+where id_estudiante=buscar_estu('JHON','2003-03-21');
+
+#Crearemos una funcion que busque su fecha de lanzamiento  segun el nombre y su autor
+
+create or replace function buscar_libro(nomlibro VARCHAR(50), autor VARCHAR(50))
+returns VARCHAR(50)
+begin
+    return (
+            select Fecha_lanzamiento
+            from autores
+            inner join libros l on autores.Id_autor = l.Id_autor
+            where NombreLibro=nomlibro and Nombre=autor
+
+    );
+end;
+
+SELECT buscar_libro('Don Quijote de la Mancha','MARIO');
+
+
+#crear un funcion que permita concatenar nombres y apellidos de la tabla estudiantes
+
+CREATE or replace function concatenamos_nombres_apellidos(nombres VARCHAR(20), apellidos varchar(20))
+    RETURNS VARCHAR(100)
+begin
+    declare resultado VARCHAR(100) DEFAULT '';
+    set resultado = concat('Nombres: ', nombres, ' Apellidos: ', apellidos);
+    return resultado;
+end;
+SELECT concatenamos_nombres_apellidos('MARCO', 'CALLE') as datos;
+select concatenamos_nombres_apellidos(Nombre,Apellido) as datos_de_estudiantes
+from estudiantes
+
+use db_biblioteca;
+
+#utilizamos la primera consulta para la creacion de una vista
+
+create view prestar_fecha_actual as
+select Nombre,Apellido,edad, fec_prestamo
+from prestamos
+inner join estudiantes e on prestamos.Id_prestamo = e.Id_prestamo
+where fec_prestamo<'2022-12-07';
+
+select*
+from prestar_fecha_actual
+
+#utilizamos la segunda  consulta para la creacion de una vista
+
+create view busca_editorial as
+select editorial.nombre,
+       id_libro,
+       nombrelibro,
+       codigo_autor,
+       codigo_editorial,
+       fecha_lanzamiento,
+       id_autor
+from editorial
+inner join libros l on editorial.Id_editorial = l.Id_editorial
+where Nombre='NATURA';
+
+select*
+from busca_editorial;
+
+#utilizamos la tercera  consulta para la creacion de una vista
+
+create or replace view busca_mayores_20 as
+select (autores.Nombre)as AUTORES,NombreLibro,fec_prestamo,e2.Nombre,e2.Apellido,e2.edad
+from autores
+inner join libros l on autores.Id_autor = l.Id_autor
+inner join editorial e on l.Id_editorial = e.Id_editorial
+inner join prestamos p on l.Id_libro = p.Id_libro
+inner join devoluciones d on p.Id_devolucion = d.Id_devolucion
+inner join estudiantes e2 on p.Id_prestamo = e2.Id_prestamo
+where edad >15;
+
+select*
+from busca_mayores_20;
+
+#crearemoss una vista donde tendremos que cencatenar el nombre y apellido y tiene que decir full_name
+# donde la edad sera years
+# donde los que no devolvieron el libro hasta la fecha actual se dira 'DEUDOR'
+
+CREATE OR REPLACE VIEW BUSCAR_DEUDOR AS
+select CONCAT(Nombre,'-',Apellido) as full_name,
+       edad as years,
+       case
+           when d.Fecha>'2022-12-05' then 'DEUDOR'
+        end as fecha_en_la_que_devolvio
+from libros
+inner join prestamos p on libros.Id_libro = p.Id_libro
+inner join estudiantes e on p.Id_prestamo = e.Id_prestamo
+inner join devoluciones d on p.Id_devolucion = d.Id_devolucion
+
+
+SELECT*
+FROM BUSCAR_DEUDOR;
+
+
+#Creamos una vista que te muestre todos los datos de los estudiantes  y que si
+#son mayores o igual  a 18 años ponerlos 'mayor de edad' y si son menores a 18 años poner 'menor de edad'
+
+create view saber_que_edad as
+select concat(Nombre,' ',Apellido) as NOMBRE_COMPLETO,
+       case
+           when edad >=18 then 'mayor de edad'
+           when edad <18 then'menor de edad'
+        end as EDAD_DE_LOS_ESTUDIANTES,
+       Fecha,
+       Id_estudiante
+from estudiantes
+
+select EDAD_DE_LOS_ESTUDIANTES
+from saber_que_edad;
+
+select*
+from saber_que_edad;
+
+use db_biblioteca;
+
+#EN ESTA PARTE HAREMOS USO DE LOS TRIGERRS
+
+#HAREMOS DOS ADUTORIAS
+
+CREATE TABLE COPIA_ESTUDIANTES
+(
+Nombre VARCHAR(20),
+Apellido VARCHAR(20),
+Fecha DATE,
+edad integer,
+Id_prestamo INTEGER,
+FOREIGN KEY (Id_prestamo) REFERENCES Prestamos (Id_prestamo)
+);
+
+CREATE TRIGGER GUARDA_DATOS_DEPUES
+    BEFORE INSERT ON estudiantes
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO COPIA_ESTUDIANTES(Nombre, Apellido, Fecha, edad, Id_prestamo)
+        VALUES(NEW.Nombre, NEW.Apellido, NEW.Fecha, NEW.edad, NEW.Id_prestamo);
+
+    end;
+
+INSERT INTO estudiantes(Id_estudiante, Nombre, Apellido, Fecha, edad, Id_prestamo)VALUES
+(9,'JOEL','LOPEZ','2002-07-13',24,2);
+
+SELECT*
+FROM COPIA_ESTUDIANTES;
+
+CREATE TABLE GUARDA_LIBROS
+(
+    NombreLibro  VARCHAR(25),
+    Codigo_autor VARCHAR(50),
+    Codigo_editorial VARCHAR(50),
+    Fecha_lanzamiento DATE,
+    Id_autor INTEGER,
+    Id_editorial INTEGER,
+    FOREIGN KEY (Id_autor) REFERENCES Autores (Id_autor),
+    FOREIGN KEY (Id_editorial) REFERENCES Editorial (Id_editorial)
+);
+
+
+CREATE TRIGGER LIBROS_GUARDADOS_DATOS
+    AFTER insert ON libros
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO GUARDA_LIBROS(NombreLibro, Codigo_autor, Codigo_editorial, Fecha_lanzamiento, Id_autor, Id_editorial)
+        VALUES (NEW.NombreLibro, NEW.Codigo_autor, NEW.Codigo_editorial, NEW.Fecha_lanzamiento, new.Id_autor, new.Id_editorial);
+
+  end;
+
+insert into libros(id_libro, nombrelibro, codigo_autor, codigo_editorial, fecha_lanzamiento, id_autor, id_editorial)
+values (9,'LA TIERRA PERDIDA','1234HGF123','D123D1','1781-09-22',3,3);
+
+SELECT*
+FROM guarda_libros
+
+#HAREMOS UN TRIGGERS DE VERIFICACION
+
+alter table bibliotecario add column password varchar(50);
+alter table bibliotecario add column usuario varchar(50);
+
+create or replace  trigger genera_password_usuario
+before insert on bibliotecario
+for each row                                 #FOR EACH=PARA CADA FILA           before = despues
+begin
+    #substring de cada dos palabras inciales
+    set new.usuario=concat(substring(new.nombre,1,2),substring(new.apellido,1,2));
+    set new.password = concat(substring(new.nombre,1,2),substring(new.apellido,1,2),substring(new.ci,1,2));
+end;
+
+insert into bibliotecario(id_bibliotecario, nombre, apellido, ci, Id_estudiante, HORARIO)
+values (3,'AURON','TORREZ','8U482LP',9,'8am-14pm');
+
+select*
+from bibliotecario;
