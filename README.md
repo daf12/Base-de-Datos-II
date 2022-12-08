@@ -64,7 +64,8 @@
 
 *<A href="https://github.com/daf12/Base-de-Datos-II/blob/main/hito%203/lab/console.sql"> Laboratorios ☞ Carpeta de los laboratiros 💻 </A>*
 
-[![4.png](https://i.postimg.cc/J0SxYhH3/4.png)](https://postimg.cc/T5qnpf9h)
+
+[![Whats-App-Image-2022-12-07-at-9-49-16-AM-2.jpg](https://i.postimg.cc/T3LHpwpk/Whats-App-Image-2022-12-07-at-9-49-16-AM-2.jpg)](https://postimg.cc/v4yvKG79)
 
 
  *# 🗂️​ HITO 4 🗂️​*
@@ -85,7 +86,7 @@
 
 *<A href="https://github.com/daf12/Base-de-Datos-II/blob/main/hito%204/codigo.rtf"> Consola de Practica 4 ☞ [ Consola, María DB] 💻 </A>*
 
-[![5.png](https://i.postimg.cc/4dmFWqFg/5.png)](https://postimg.cc/mzWwDXsX)
+[![Whats-App-Image-2022-12-07-at-9-49-17-AM-1.jpg](https://i.postimg.cc/6qhTVtqg/Whats-App-Image-2022-12-07-at-9-49-17-AM-1.jpg)](https://postimg.cc/p5p2RNDJ)
 
 
  *# 🗂️​ HITO 5/ PROYECTO FINAL 🗂️​*
